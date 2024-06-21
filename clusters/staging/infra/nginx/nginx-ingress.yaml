@@ -1,0 +1,30 @@
+---
+apiVersion: "argoproj.io/v1alpha1"
+kind: "Application"
+metadata:
+  name: ingress-nginx
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  # https://argoproj.github.io/argo-cd/user-guide/auto_sync/
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    retry:
+      limit: -1 # -1 means retry forever
+      backoff:
+        duration: 1m
+        factor: 1
+        maxDuration: 1m
+  source:
+    repoURL: https://kubernetes.github.io/ingress-nginx
+    chart: ingress-nginx
+    targetRevision: 4.10.1
+    # helm:
+    #   values: |
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: ingress-nginx

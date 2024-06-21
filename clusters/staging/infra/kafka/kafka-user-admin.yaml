@@ -1,0 +1,46 @@
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaUser
+metadata:
+  name: kafka-admin
+  labels:
+    strimzi.io/cluster: application
+spec:
+  authentication:
+    type: tls
+  authorization:
+    type: simple
+    acls:
+      - resource:
+          type: transactionalId
+          name: 'kafka-connect-outbox-'
+          patternType: prefix
+        operations:
+          - All
+        host: "*"
+      - resource:
+          type: transactionalId
+          name: 'connect-cluster-'
+          patternType: prefix
+        operations:
+          - All
+        host: "*"
+      - resource:
+          type: topic
+          name: '*'
+          patternType: literal
+        operation: All
+      - resource:
+          type: group
+          name: '*'
+          patternType: literal
+        operations:
+          - All
+        host: "*"
+      - resource:
+          type: cluster
+          name: dev
+          patternType: literal
+        operations:
+          - Describe
+          - DescribeConfigs
+        host: "*"
