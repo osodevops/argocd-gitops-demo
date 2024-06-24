@@ -1,9 +1,8 @@
 # argocd-gitops-demo
 About A fully automated deployment using GitOps. Showcases multi namespaced environments and the progressive delivery
 
-### Kube commands
+### Setup ArgoCD and required packages
 
 ```shell
-1. Start the minikube cluster: `minikube start --cpus=6 --memory=20019`
-2. Deploy the correct cluster manifests: `kubectl apply -k ./clusters/staging`
-```
+1. chmod +x ./scripts/setup-argocd.sh (if required)
+2. ./setup-argocd.sh --memory 8192 --cpus 8
