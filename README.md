@@ -26,6 +26,7 @@ This is used for the demo, as it's very quick to setup and we don't have to crea
 
 This will add a repository (authenticated) and an application that will reconcile/sync changes withing the `overlays/staging` application.
 
+
 ### Github Authentication via Private Key
 
 To create a Kubernetes secret that uses an RSA private key for authentication with a GitHub repository, you need to create a Kubernetes secret with the label argocd.argoproj.io/secret-type: repository. This secret will contain the SSH private key and be used by ArgoCD to authenticate with the repository. Here's how you can set it up:
@@ -43,9 +44,10 @@ Go to your GitHub repository, navigate to Settings > Deploy keys, and add the co
 
 3. Update the `./argocd/repositories/private_git_authentication.yaml` with the private key typically found in `~/.ssh/id_rsa`
 
-4. `kubectl apply -f private_git_authentication.yaml`
 
+### Apply the Application, Github repository authentication and the `overlays/staging` apps
 
-### Apply staging
-
-1. in root `kubectl apply -f ./overlays/staging .`
+1. `cd argocd && kubectl apply -k .`
+This will create:
+- Github secret, authenticating the repository
+- The application and sync/provision any resource(s) within the `overlays/staging` directory.
