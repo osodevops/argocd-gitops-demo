@@ -4,16 +4,6 @@
 command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
-
-# Function to open URL in the default browser
-open_browser() {
-    case "$OSTYPE" in
-        darwin*) open "$1" ;;  # MacOS
-        linux*) xdg-open "$1" ;;  # Linux
-        *) echo "Cannot open URL on this OS. Please open $1 manually." ;;
-    esac
-}
-
 # Function to parse command-line arguments for memory and CPU
 parse_args() {
     MEMORY="6144"
@@ -142,7 +132,4 @@ if [ $PORT_FORWARD_SUCCESS -ne 1 ]; then
 fi
 
 echo "Argo CD setup completed successfully!"
-echo "Access the Argo CD UI at http://localhost:8080"
 
-# Open the Argo CD UI in the default browser
-open_browser "http://localhost:8080"
