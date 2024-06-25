@@ -23,7 +23,7 @@ This is used for the demo, as it's very quick to setup and we don't have to crea
 
 - run the `argo-auth-application-sync.sh`
 
-This will add a repository (authenticated) and an application that will reconcile/sync changes within the `overlays/staging` application(s) on the ArgoCD UI. You can login (you will find the admin password output on the terminal from running the `./setup-argocd.sh` script earlier).
+This will add a repository (authenticated) and an application that will reconcile/sync changes within the `overlays/staging` application(s) on the ArgoCD UI. You can login (you will find the admin password output on the terminal from running either script).
 
 Can also run `kubectl get deployments -A && kubectl get services -A` and you will see the newly created deployment(s) and service(s) on the minikube cluster.
 
