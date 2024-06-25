@@ -1,0 +1,26 @@
+# Authenticate can also be done via a private RSA Key but simplicility of the demo you can use a PAT token with repo access.
+apiVersion: v1
+kind: Secret
+metadata:
+  name: my-repo-secret-example
+  namespace: argocd
+  labels:
+    argocd.argoproj.io/secret-type: repository
+stringData:
+  url: https://github.com/osodevops/argocd-gitops-demo.git
+  password: "replace-with-git-PAT"
+  username: MrDevOpsMan
+---
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   name: my-repo-secret-ssh
+#   namespace: argocd
+#   labels:
+#     argocd.argoproj.io/secret-type: repository
+# stringData:
+#   url: git@github.com:your-github-username/your-private-repo.git
+#   sshPrivateKey: |
+#     -----BEGIN OPENSSH PRIVATE KEY-----
+#     your-private-key-content
+#     -----END OPENSSH PRIVATE KEY-----

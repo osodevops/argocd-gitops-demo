@@ -110,20 +110,39 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-# Expose Argo CD server
-# & run in background, allowing the script to continue...
-echo "Exposing Argo CD server on port 8080..."
-kubectl -n argocd port-forward svc/argocd-server 8080:80 & 
-
 # Log in to Argo CD CLI
 echo "Logging in to Argo CD CLI..."
 argocd login localhost:8080 --username admin --password "${argocd_password}" --insecure
+
+# Retry port-forwarding up to 3 times if it fails
+MAX_RETRIES=3
+RETRY_COUNT=0
+PORT_FORWARD_SUCCESS=0
+
+while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+    echo "Exposing Argo CD server on port 8080 (Attempt $((RETRY_COUNT+1))/$MAX_RETRIES)..."
+    kubectl -n argocd port-forward svc/argocd-server 8080:80 &
+    PORT_FORWARD_PID=$!
+    sleep 5
+    
+    # Check if port-forwarding is working
+    if lsof -i :8080 &>/dev/null; then
+        PORT_FORWARD_SUCCESS=1
+        break
+    else
+        kill $PORT_FORWARD_PID
+        RETRY_COUNT=$((RETRY_COUNT + 1))
+        sleep 5
+    fi
+done
+
+if [ $PORT_FORWARD_SUCCESS -ne 1 ]; then
+    echo "Failed to set up port-forwarding for Argo CD after $MAX_RETRIES attempts. Exiting..."
+    exit 1
+fi
 
 echo "Argo CD setup completed successfully!"
 echo "Access the Argo CD UI at http://localhost:8080"
 
 # Open the Argo CD UI in the default browser
 open_browser "http://localhost:8080"
-
-# Clean up port-forwarding process on exit
-trap "kill $(jobs -p)" EXIT
