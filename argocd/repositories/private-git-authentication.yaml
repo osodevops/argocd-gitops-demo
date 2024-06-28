@@ -8,7 +8,6 @@ metadata:
     argocd.argoproj.io/secret-type: repository
 stringData:
   url: https://github.com/osodevops/argocd-gitops-demo.git
-
   password: "replace-with-github-pat"
   username: MrDevOpsMan
 ---

@@ -1,17 +1,18 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: nginx-ingress
+  name: default-ingress
+  namespace: default
 spec:
   ingressClassName: nginx
   rules:
-    - host: hello-world.example
+    - host: default.example
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: nginx-service
+                name: default-service
                 port:
                   number: 80

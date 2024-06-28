@@ -28,6 +28,15 @@ else
     echo "Homebrew is already installed."
 fi
 
+# Install Kustomize if not installed
+if ! command_exists kustomize; then
+    echo "Kustomize not found. Installing Kustomize..."
+    brew install kustomize
+else
+    echo "Homebrew is already installed."
+fi
+
+
 # Install Minikube if not installed
 if ! command_exists minikube; then
     echo "Minikube not found. Installing Minikube..."

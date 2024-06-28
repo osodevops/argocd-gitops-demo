@@ -45,3 +45,11 @@ Go to your GitHub repository, navigate to Settings > Deploy keys, and add the co
 
 3. Update the `./argocd/repositories/private_git_authentication.yaml` with the private key typically found in `~/.ssh/id_rsa`
 
+###  Kustomize
+
+We are using best practice with Kustomize. Kustomize provides us the ability to use overlays. Which essentially means we can provide a base that all apps will inherit and patch any keys that are required. This allows us to build out various environments such as staging, production etc quickly. We can take benefit from a pre-defined template that will be common in all types of "Kinds" such as Deployments, Service, Ingress etc.
+
+We can build out the patches and validate them before applying them to the cluster via kustomize.
+
+Example:
+cd `overlays/staging/nginx` and run `kustomize build .` you will see the full yaml manifest in your terminal, if you get out put it's validated but just double check the keys you intended to patch.
