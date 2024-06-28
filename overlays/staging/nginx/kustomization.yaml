@@ -7,25 +7,6 @@ patches:
   - patch: |
       - op: replace
         path: /metadata/name
-        value: nginx-ingress
-      - op: replace
-        path: /metadata/namespace
-        value: default
-      - op: replace
-        path: /spec/rules/0/host
-        value: nginx.example.com
-      - op: replace
-        path: /spec/rules/0/http/paths/0/backend/service/name
-        value: nginx-service
-      - op: replace
-        path: /spec/rules/0/http/paths/0/backend/service/port/number
-        value: 80
-    target: 
-      kind: Ingress
-      name: default-ingress
-  - patch: |
-      - op: replace
-        path: /metadata/name
         value: nginx-deployment
       - op: replace
         path: /metadata/namespace
@@ -67,3 +48,22 @@ patches:
     target: 
       kind: Service
       name: default-service
+  - patch: |
+      - op: replace
+        path: /metadata/name
+        value: nginx-ingress
+      - op: replace
+        path: /metadata/namespace
+        value: default
+      - op: replace
+        path: /spec/rules/0/host
+        value: nginx.example
+      - op: replace
+        path: /spec/rules/0/http/paths/0/backend/service/name
+        value: nginx-service
+      - op: replace
+        path: /spec/rules/0/http/paths/0/backend/service/port/number
+        value: 80
+    target: 
+      kind: Ingress
+      name: default-ingress
