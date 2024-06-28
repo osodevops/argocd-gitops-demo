@@ -1,9 +1,22 @@
 #!/bin/bash
 
+echo "Enabling ingress on minikube..."
+minikube addons enable ingress
+
 # Function to check if a command exists
 command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
+
+# Function to open URL in the default browser
+open_browser() {
+    case "$OSTYPE" in
+        darwin*) open "$1" ;;  # MacOS
+        linux*) xdg-open "$1" ;;  # Linux
+        *) echo "Cannot open URL on this OS. Please open $1 manually." ;;
+    esac
+}
+
 # Function to parse command-line arguments for memory and CPU
 parse_args() {
     MEMORY="6144"
@@ -35,7 +48,6 @@ if ! command_exists kustomize; then
 else
     echo "Kustomize is already installed."
 fi
-
 
 # Install Minikube if not installed
 if ! command_exists minikube; then
@@ -72,13 +84,13 @@ kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/st
 
 # Check if Argo CD was applied successfully
 if [ $? -ne 0 ]; then
-    echo "Failed to apply Argo CD manifests. Exiting..."y
+    echo "Failed to apply Argo CD manifests. Exiting..."
     exit 1
 fi
 
 # Wait for Argo CD server to be running
 echo "Waiting for Argo CD server to be ready..."
-until kubectl get pods -n argocd -l app.kubernetes.io/name=argocd-server -o jsonpath='{.items[0].status.phase}' | grep -q 'Running'; do
+until kubectl get pods -n argocd -l app.kubernetes.io/name=argocd-server -o jsonpath='{.items[?(@.status.phase=="Running")].status.phase}' | grep -q 'Running'; do
   echo -n "."
   sleep 5
 done
@@ -111,7 +123,7 @@ fi
 
 # Log in to Argo CD CLI
 echo "Logging in to Argo CD CLI..."
-argocd login localhost:8080 --username admin --password "${argocd_password}" --insecure
+argocd login localhost:9090 --username admin --password "${argocd_password}" --insecure
 
 # Retry port-forwarding up to 3 times if it fails
 MAX_RETRIES=3
@@ -119,13 +131,13 @@ RETRY_COUNT=0
 PORT_FORWARD_SUCCESS=0
 
 while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
-    echo "Exposing Argo CD server on port 8080 (Attempt $((RETRY_COUNT+1))/$MAX_RETRIES)..."
-    kubectl -n argocd port-forward svc/argocd-server 8080:80 &
+    echo "Exposing Argo CD server on port 9090 (Attempt $((RETRY_COUNT+1))/$MAX_RETRIES)..."
+    kubectl -n argocd port-forward svc/argocd-server 9090:80 &
     PORT_FORWARD_PID=$!
     sleep 5
     
     # Check if port-forwarding is working
-    if lsof -i :8080 &>/dev/null; then
+    if lsof -i :9090 &>/dev/null; then
         PORT_FORWARD_SUCCESS=1
         break
     else
@@ -141,4 +153,7 @@ if [ $PORT_FORWARD_SUCCESS -ne 1 ]; then
 fi
 
 echo "Argo CD setup completed successfully!"
+echo "Access the Argo CD UI at http://localhost:9090"
 
+# Open the Argo CD UI in the default browser
+open_browser "http://localhost:9090"

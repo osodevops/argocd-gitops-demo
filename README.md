@@ -53,3 +53,28 @@ We can build out the patches and validate them before applying them to the clust
 
 Example:
 cd `overlays/staging/nginx` and run `kustomize build .` you will see the full yaml manifest in your terminal, if you get out put it's validated but just double check the keys you intended to patch.
+
+### Expose the app via Ingress and a local domain
+Run 
+`minikube tunnel`
+validate the service is returning the expected reponse
+
+```
+user@MacBook-Pro scripts % curl --resolve "nginx.example:80:127.0.0.1" -i http://nginx.example
+
+HTTP/1.1 200 OK
+Date: Fri, 28 Jun 2024 12:46:54 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 72
+Connection: keep-alive
+
+Hello, world!
+Version: 1.0.0
+Hostname: nginx-deployment-757d54c6b-kgztv
+```
+
+Great! now we can update `sudo nano /etc/hosts` and add
+
+`127.0.0.1 nginx.example`
+
+visit your browser with `nginx.example` and you will see the html "Hello, world!"

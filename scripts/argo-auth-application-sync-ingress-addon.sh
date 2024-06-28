@@ -1,8 +1,5 @@
 # Apply Kustomize configuration
 
-echo "Enabling ingress on minikube..."
-minikube addons enable ingress
-
 echo "Applying Kustomize configuration..."
 kubectl apply -k ../argocd
 
@@ -16,4 +13,4 @@ echo "Argo CD setup completed successfully!"
 argocd_password=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
 echo "Reminder of the admin admin password: ${argocd_password}"
 
-echo "Access the Argo CD UI at http://localhost:8080"
+echo "Access the Argo CD UI at http://localhost:9090"
