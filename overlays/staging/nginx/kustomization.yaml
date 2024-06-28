@@ -27,9 +27,6 @@ patches:
         path: /spec/template/spec/containers/0/name
         value: nginx
       - op: replace
-        path: /spec/template/spec/containers/0/ports/0/port
-        value: 80
-      - op: replace
         path: /spec/template/spec/containers/0/ports/0/containerPort
         value: 8080
       - op: replace
@@ -69,7 +66,7 @@ patches:
         value: default
       - op: replace
         path: /spec/rules/0/host
-        value: hello-world.example
+        value: nginx.example
       - op: replace
         path: /spec/rules/0/http/paths/0/backend/service/name
         value: nginx-service
