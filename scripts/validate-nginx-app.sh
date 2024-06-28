@@ -31,25 +31,28 @@ else
     sleep 10
 fi
 
-# Validate the service response
-echo "Validating the service response..."
-RESPONSE=$(curl --resolve "nginx.example:80:127.0.0.1" -s -o /dev/null -w "%{http_code}" http://nginx.example)
+# Validate the service response for Python app
+PYTHON_APP_HOST="python.example"
+PYTHON_APP_PORT=8080
+
+echo "Validating the service response for Python app..."
+RESPONSE=$(curl --resolve "${PYTHON_APP_HOST}:${PYTHON_APP_PORT}:127.0.0.1" -s -o /dev/null -w "%{http_code}" "http://${PYTHON_APP_HOST}:${PYTHON_APP_PORT}")
 
 if [ "$RESPONSE" -eq 200 ]; then
     echo "Service is returning the expected response."
     
     # Update /etc/hosts
     echo "Updating /etc/hosts..."
-    if grep -q "127.0.0.1 nginx.example" /etc/hosts; then
+    if grep -q "127.0.0.1 ${PYTHON_APP_HOST}" /etc/hosts; then
         echo "/etc/hosts already contains the entry."
     else
-        echo "127.0.0.1 nginx.example" | sudo tee -a /etc/hosts > /dev/null
+        echo "127.0.0.1 ${PYTHON_APP_HOST}" | sudo tee -a /etc/hosts > /dev/null
         echo "/etc/hosts updated successfully."
     fi
 
     # Open in default browser
-    echo "Opening nginx.example in the default browser..."
-    open_browser "http://nginx.example"
+    echo "Opening ${PYTHON_APP_HOST}:${PYTHON_APP_PORT} in the default browser..."
+    open_browser "http://${PYTHON_APP_HOST}:${PYTHON_APP_PORT}"
 
     echo "Process completed successfully!"
 else
