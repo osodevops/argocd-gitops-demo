@@ -15,7 +15,7 @@ Run these scripts in order:
 - `cd ./scripts`
 - `chmod +x <script>` is required
 - `./setup-argocd-and-enable-ingress.sh`
-- `./argo-auth-application-sync.sh` (once you've done Github authentication with Github PAT)
+- `./argo-auth-application-sync.sh` (once you've done [Github Authentication with Github PAT](#github-authentication-with-github-pat))
 - `./validate-nginx-app.sh`
 
 ## Detailed Information
