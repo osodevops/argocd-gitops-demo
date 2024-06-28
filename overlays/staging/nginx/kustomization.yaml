@@ -48,6 +48,9 @@ patches:
       - op: replace
         path: /metadata/name
         value: nginx-service
+     - op: replace
+        path: /spec/ports/0/targetPort
+        value: 8080
   - target:
       kind: Ingress
       name: default-ingress
