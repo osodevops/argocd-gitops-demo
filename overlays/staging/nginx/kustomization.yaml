@@ -27,6 +27,12 @@ patches:
         path: /spec/template/spec/containers/0/name
         value: nginx
       - op: replace
+        path: /spec/template/spec/containers/0/ports/0/port
+        value: 80
+      - op: replace
+        path: /spec/template/spec/containers/0/ports/0/containerPort
+        value: 8080
+      - op: replace
         path: /spec/template/spec/containers/0/resources/requests/memory
         value: "128Mi"
       - op: replace
