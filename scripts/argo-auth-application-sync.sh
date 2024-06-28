@@ -1,4 +1,8 @@
 # Apply Kustomize configuration
+
+echo "Enabling ingress on minikube..."
+minikube addons enable ingress
+
 echo "Applying Kustomize configuration..."
 kubectl apply -k ../argocd
 
