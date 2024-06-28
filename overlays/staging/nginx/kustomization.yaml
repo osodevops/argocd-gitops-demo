@@ -13,7 +13,7 @@ patches:
         value: default
       - op: replace
         path: /spec/rules/0/host
-        value: hello-world.example.com
+        value: nginx.example.com
       - op: replace
         path: /spec/rules/0/http/paths/0/backend/service/name
         value: nginx-service

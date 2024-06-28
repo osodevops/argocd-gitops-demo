@@ -33,7 +33,7 @@ if ! command_exists kustomize; then
     echo "Kustomize not found. Installing Kustomize..."
     brew install kustomize
 else
-    echo "Homebrew is already installed."
+    echo "Kustomize is already installed."
 fi
 
 
