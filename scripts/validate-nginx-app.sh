@@ -32,8 +32,8 @@ else
 fi
 
 # Validate the service response for Python app
-PYTHON_APP_HOST="python.example"
-PYTHON_APP_PORT=80
+PYTHON_APP_HOST="nginx.example"
+PYTHON_APP_PORT=8080
 
 echo "Validating the service response for Python app..."
 RESPONSE=$(curl --resolve "${PYTHON_APP_HOST}:${PYTHON_APP_PORT}:127.0.0.1" -s -o /dev/null -w "%{http_code}" "http://${PYTHON_APP_HOST}:${PYTHON_APP_PORT}")
