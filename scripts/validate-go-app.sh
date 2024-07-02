@@ -31,28 +31,28 @@ else
     sleep 10
 fi
 
-# Validate the service response for Python app
-PYTHON_APP_HOST="python.example"
-PYTHON_APP_PORT=80
+# Validate the service response for Go app
+GO_APP_HOST="go.example"
+GO_APP_PORT=80
 
-echo "Validating the service response for Python app..."
-RESPONSE=$(curl --resolve "${PYTHON_APP_HOST}:${PYTHON_APP_PORT}:127.0.0.1" -s -o /dev/null -w "%{http_code}" "http://${PYTHON_APP_HOST}:${PYTHON_APP_PORT}")
+echo "Validating the service response for Go app..."
+RESPONSE=$(curl --resolve "${GO_APP_HOST}:${GO_APP_PORT}:127.0.0.1" -s -o /dev/null -w "%{http_code}" "http://${GO_APP_HOST}:${GO_APP_PORT}")
 
 if [ "$RESPONSE" -eq 200 ]; then
     echo "Service is returning the expected response."
     
     # Update /etc/hosts
     echo "Updating /etc/hosts..."
-    if grep -q "127.0.0.1 ${PYTHON_APP_HOST}" /etc/hosts; then
+    if grep -q "127.0.0.1 ${GO_APP_HOST}" /etc/hosts; then
         echo "/etc/hosts already contains the entry."
     else
-        echo "127.0.0.1 ${PYTHON_APP_HOST}" | sudo tee -a /etc/hosts > /dev/null
+        echo "127.0.0.1 ${GO_APP_HOST}" | sudo tee -a /etc/hosts > /dev/null
         echo "/etc/hosts updated successfully."
     fi
 
     # Open in default browser
-    echo "Opening ${PYTHON_APP_HOST}:${PYTHON_APP_PORT} in the default browser..."
-    open_browser "http://${PYTHON_APP_HOST}:${PYTHON_APP_PORT}"
+    echo "Opening ${GO_APP_HOST}:${GO_APP_PORT} in the default browser..."
+    open_browser "http://${GO_APP_HOST}"
 
     echo "Process completed successfully!"
 else

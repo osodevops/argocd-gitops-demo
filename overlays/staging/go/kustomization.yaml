@@ -10,7 +10,7 @@ patches:
     patch: |-
       - op: replace
         path: /metadata/name
-        value: python-deployment
+        value: go-deployment
       - op: replace
         path: /metadata/namespace
         value: default
@@ -19,16 +19,16 @@ patches:
         value: 1
       - op: replace
         path: /spec/selector/matchLabels/app
-        value: python-app
+        value: go-app
       - op: replace
         path: /spec/template/metadata/labels/app
-        value: python-app
+        value: go-app
       - op: replace
         path: /spec/template/spec/containers/0/name
-        value: python-container
+        value: go-container
       - op: replace
         path: /spec/template/spec/containers/0/ports/0/containerPort
-        value: 8080
+        value: 80
       - op: replace
         path: /spec/template/spec/containers/0/resources/requests/memory
         value: "128Mi"
@@ -43,39 +43,43 @@ patches:
         value: "1"
       - op: replace
         path: /spec/template/spec/containers/0/image
-        value: python:3.8-slim
-      - op: add
-        path: /spec/template/spec/containers/0/command
-        value: ["sh", "-c"]
-      - op: add
-        path: /spec/template/spec/containers/0/args
-        value: ["pip install flask && echo 'from flask import Flask; app = Flask(__name__); @app.route(\"/\") def hello(): return \"Hello, World!\"; if __name__ == \"__main__\": app.run(host=\"0.0.0.0\", port=8080)' > app.py && python app.py"]
+        value: mrdevopsman/go-app:1.0.0
   - target:
       kind: Service
       name: default-service
     patch: |-
       - op: replace
         path: /metadata/name
-        value: python-service
+        value: go-service
+      - op: replace
+        path: /spec/ports/0/port
+        value: 80
       - op: replace
         path: /spec/ports/0/targetPort
-        value: 8080
+        value: 80
+      - op: replace
+        path: /spec/selector/app
+        value: go-app
   - target:
       kind: Ingress
       name: default-ingress
     patch: |-
       - op: replace
         path: /metadata/name
-        value: python-ingress
+        value: go-ingress
       - op: replace
         path: /metadata/namespace
         value: default
       - op: replace
+        path: /metadata/annotations
+        value:
+          nginx.ingress.kubernetes.io/rewrite-target: /
+      - op: replace
         path: /spec/rules/0/host
-        value: python.example
+        value: go.example
       - op: replace
         path: /spec/rules/0/http/paths/0/backend/service/name
-        value: python-service
+        value: go-service
       - op: replace
         path: /spec/rules/0/http/paths/0/backend/service/port/number
-        value: 8080
+        value: 80

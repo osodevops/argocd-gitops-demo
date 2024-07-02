@@ -66,7 +66,7 @@ patches:
         value: default
       - op: replace
         path: /spec/rules/0/host
-        value: nginx.example
+        value: nginc.example
       - op: replace
         path: /spec/rules/0/http/paths/0/backend/service/name
         value: nginx-service
