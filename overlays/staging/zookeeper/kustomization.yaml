@@ -42,7 +42,12 @@ patches:
         value: "1"
       - op: replace
         path: /spec/template/spec/containers/0/image
-        value: wurstmeister/zookeeper:3.4.6
+        value: bitnami/zookeeper:3.8.0
+      - op: add
+        path: /spec/template/spec/containers/0/env
+        value:
+          - name: ALLOW_ANONYMOUS_LOGIN
+            value: "yes"
   - target:
       kind: Service
       name: default-service
