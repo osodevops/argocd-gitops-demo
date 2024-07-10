@@ -9,7 +9,7 @@ patches:
     patch: |-
       - op: replace
         path: /metadata/name
-        value: kafka-deployment
+        value: kafka
       - op: replace
         path: /metadata/namespace
         value: default
@@ -30,13 +30,13 @@ patches:
         value: 9092
       - op: replace
         path: /spec/template/spec/containers/0/resources/requests/memory
-        value: "128Mi"
+        value: "1024Mi"
       - op: replace
         path: /spec/template/spec/containers/0/resources/requests/cpu
-        value: "500m"
+        value: "1"
       - op: replace
         path: /spec/template/spec/containers/0/resources/limits/memory
-        value: "256Mi"
+        value: "2048Mi"
       - op: replace
         path: /spec/template/spec/containers/0/resources/limits/cpu
         value: "1"
@@ -46,19 +46,23 @@ patches:
       - op: add
         path: /spec/template/spec/containers/0/env
         value:
-          - name: KAFKA_LISTENERS
-            value: PLAINTEXT://0.0.0.0:9092
-          - name: KAFKA_ADVERTISED_LISTENERS
-            value: PLAINTEXT://kafka:9092
+          - name: KAFKA_ADVERTISED_HOST_NAME
+            value: 127.0.0.1
+          # - name: KAFKA_ADVERTISED_PORT
+          #   value: "9092"
+          # - name: KAFKA_BROKER_ID
+          #   value: "1"
           - name: KAFKA_ZOOKEEPER_CONNECT
             value: zookeeper-service:2181
+          - name: KAFKA_CREATE_TOPICS
+            value: "demo:1:1"
   - target:
       kind: Service
       name: default-service
     patch: |-
       - op: replace
         path: /metadata/name
-        value: kafka-service
+        value: kafka
       - op: replace
         path: /spec/ports/0/port
         value: 9092
