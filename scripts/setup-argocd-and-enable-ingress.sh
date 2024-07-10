@@ -1,8 +1,4 @@
 #!/bin/bash
-
-# echo "Enabling ingress on minikube..."
-# minikube addons enable ingress
-
 # Function to check if a command exists
 command_exists() {
     command -v "$1" >/dev/null 2>&1
@@ -74,6 +70,9 @@ if [ $? -ne 0 ]; then
     echo "Failed to start Minikube. Exiting..."
     exit 1
 fi
+
+echo "Enabling ingress on minikube..."
+minikube addons enable ingress
 
 # Install Argo CD
 echo "Creating namespace 'argocd' for Argo CD..."
