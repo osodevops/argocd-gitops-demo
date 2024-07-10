@@ -17,6 +17,7 @@ Run these scripts in order:
 - `./setup-argocd-and-enable-ingress.sh`
 - `./argo-auth-application-sync.sh` (once you've done [Github Authentication with Github PAT](#github-authentication-with-github-pat))
 - `./validate-nginx-app.sh`
+- `./validate-go-app.sh`
 
 ## Detailed Information
 
