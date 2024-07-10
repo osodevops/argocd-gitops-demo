@@ -1,7 +1,7 @@
 #!/bin/bash
 
-echo "Enabling ingress on minikube..."
-minikube addons enable ingress
+# echo "Enabling ingress on minikube..."
+# minikube addons enable ingress
 
 # Function to check if a command exists
 command_exists() {
