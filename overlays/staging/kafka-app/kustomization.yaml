@@ -1,7 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ../../../base/network
   - ../../../base/app
 patches:
   - target:
@@ -31,28 +30,30 @@ patches:
         value: 8080
       - op: replace
         path: /spec/template/spec/containers/0/resources/requests/memory
-        value: "128Mi"
+        value: "1024Mi"
       - op: replace
         path: /spec/template/spec/containers/0/resources/requests/cpu
-        value: "500m"
-      - op: replace
-        path: /spec/template/spec/containers/0/resources/limits/memory
-        value: "256Mi"
-      - op: replace
-        path: /spec/template/spec/containers/0/resources/limits/cpu
         value: "1"
       - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/memory
+        value: "2048Mi"
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/cpu
+        value: "2"
+      - op: replace
         path: /spec/template/spec/containers/0/image
-        value: mrdevopsman/kafka-spring-app:1.0.2
+        value: mrdevopsman/kafka-spring-app:1.0.3
       - op: add
         path: /spec/template/spec/containers/0/env
         value:
           - name: KAFKA_BROKER
             value: kafka:9092
-          - name: KAFKA_ADVERTISED_LISTENERS
-            value: PLAINTEXT://kafka:9092
-          - name: KAFKA_ZOOKEEPER_CONNECT
-            value: zookeeper:2181
+          - name: LOGGING_LEVEL_ROOT
+            value: DEBUG
+          - name: SPRING_KAFKA_PRODUCER_SECURITY_PROTOCOL
+            value: PLAINTEXT
+          - name: SPRING_KAFKA_CONSUMER_SECURITY_PROTOCOL
+            value: PLAINTEXT
   - target:
       kind: Service
       name: default-service
